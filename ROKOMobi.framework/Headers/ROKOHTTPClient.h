@@ -21,7 +21,7 @@ typedef void(^ROKOHTTPClientCompletionWithURL)( NSURL *url, id responseObject, N
 
 - (void)postDataWithURL:(NSString *)URLString parameters:(NSDictionary *)parameters body:(NSData *)body completion:(ROKOHTTPClientCompletion)completion;
 
-- (void)deleteRequestWithURL:(NSString *)URLString parameters:(NSDictionary *)parameters body:(NSData *)body completion:(ROKOHTTPClientCompletion)completion;
+- (void)deleteRequestWithURL:(NSString *)URLString parameters:(NSDictionary *)parameters customHeaders:(NSDictionary *)headers completion:(ROKOHTTPClientCompletion)completion;
 
 - (void)downloadImageWithURL:(NSURL *)url completion:(ROKOHTTPClientCompletionWithURL)completion;
 
