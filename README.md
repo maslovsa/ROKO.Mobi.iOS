@@ -697,6 +697,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var pushComponent: ROKOPush?
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+        // Register for Apple Remote Push Notifications
         let settings: UIUserNotificationSettings = UIUserNotificationSettings( forTypes: [.Alert, .Badge, .Sound], categories: nil )
         application.registerUserNotificationSettings( settings )
         application.registerForRemoteNotifications()
@@ -704,7 +705,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
      func application( application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData){
+        // Create an instanse of ROKOPush component
         pushComponent = ROKOPush()
+        // Subscribe to notifications from ROKO Portal
         pushComponent!.registerWithAPNToken(deviceToken, withCompletion: nil)
         print( deviceToken )
     }
