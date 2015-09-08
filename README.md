@@ -99,6 +99,7 @@ On your view add two buttons (call it takePhotoButton and choosePhotoButton). Th
 
 Use kRLComposerWorkflowTypeCamera - to start with Screen 1a. Camera View (Figure #1).
 
+Objective-C
 ```Objective-C
 - (IBAction)takePhotoButtonPressed:(UIButton *)sender {
 	RLComposerWorkflowController *workflowController = [RLComposerWorkflowController buildComposerWorkflowWithType:kRLComposerWorkflowTypeCamera useROKOCMS:NO];
@@ -111,8 +112,23 @@ Use kRLComposerWorkflowTypeCamera - to start with Screen 1a. Camera View (Figure
 }
 ```
 
+Swift
+```Swift
+    @IBAction func takePhotoButtonPressed(sender: AnyObject) {
+        if let controller = RLComposerWorkflowController.buildComposerWorkflowWithType(RLComposerWorkflowType.Camera, useROKOCMS: false) {
+            controller.composer.dataSource = dataSource;
+            controller.composer.delegate = self;
+            controller.composer.scheme = stickersScheme;
+            workflowController = controller
+            loadStickersForController(workflowController!);
+            self.presentViewController(workflowController!, animated: true, completion: nil)
+        }
+    }
+```
+
 Use kRLComposerWorkflowTypePhotoPicker - to start with Screen 1b. Image Picker (Figure #1)
 
+Objective-C
 ```Objective-C
 - (IBAction)choosePhotoButtonPressed:(UIButton *)sender {
 	RLComposerWorkflowController *workflowController = [RLComposerWorkflowController buildComposerWorkflowWithType:kRLComposerWorkflowTypePhotoPicker useROKOCMS:NO];
@@ -126,7 +142,20 @@ Use kRLComposerWorkflowTypePhotoPicker - to start with Screen 1b. Image Picker (
 	}
 }
 ```
-
+Swift
+```Swift
+    @IBAction func choosePhotoButtonPressed(sender: AnyObject) {
+        if let controller = RLComposerWorkflowController.buildComposerWorkflowWithType(RLComposerWorkflowType.PhotoPicker, useROKOCMS: false) {
+            workflowController = controller
+            let photoComposer = controller.composer
+            photoComposer!.delegate = self;
+            photoComposer!.dataSource = dataSource;
+            workflowController!.composer.scheme = stickersScheme;
+            self.loadStickersForController(workflowController!);
+            self.presentViewController(workflowController!, animated: true, completion: nil)
+        }
+    }
+```
 ####2) Configure ROKOStickers' behavior & content:
 
 
