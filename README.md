@@ -115,13 +115,11 @@ Objective-C
 Swift
 ```Swift
     @IBAction func takePhotoButtonPressed(sender: AnyObject) {
-        if let controller = RLComposerWorkflowController.buildComposerWorkflowWithType(RLComposerWorkflowType.Camera, useROKOCMS: false) {
-            controller.composer.dataSource = dataSource;
-            controller.composer.delegate = self;
-            controller.composer.scheme = stickersScheme;
-            workflowController = controller
-            loadStickersForController(workflowController!);
-            self.presentViewController(workflowController!, animated: true, completion: nil)
+        if let workflowController = RLComposerWorkflowController.buildComposerWorkflowWithType(RLComposerWorkflowType.Camera, useROKOCMS: false) {
+            workflowController.composer.dataSource = dataSource;
+            workflowController.composer.delegate = self;
+            workflowController.composer.scheme = stickersScheme;
+            self.presentViewController(workflowController, animated: true, completion: nil)
         }
     }
 ```
@@ -145,14 +143,12 @@ Objective-C
 Swift
 ```Swift
     @IBAction func choosePhotoButtonPressed(sender: AnyObject) {
-        if let controller = RLComposerWorkflowController.buildComposerWorkflowWithType(RLComposerWorkflowType.PhotoPicker, useROKOCMS: false) {
-            workflowController = controller
-            let photoComposer = controller.composer
+        if let workflowController = RLComposerWorkflowController.buildComposerWorkflowWithType(RLComposerWorkflowType.PhotoPicker, useROKOCMS: false) {
+            let photoComposer = workflowController.composer
             photoComposer!.delegate = self;
             photoComposer!.dataSource = dataSource;
-            workflowController!.composer.scheme = stickersScheme;
-            self.loadStickersForController(workflowController!);
-            self.presentViewController(workflowController!, animated: true, completion: nil)
+            workflowController.composer.scheme = stickersScheme;
+            self.presentViewController(workflowController, animated: true, completion: nil)
         }
     }
 ```
@@ -689,12 +685,46 @@ Call registerWithAPNToken: method of ROKOPush class to begin receiving notificat
 
 @end
 ```
+Swift
+```Swift
+import UIKit
+import ROKOMobi
+
+@UIApplicationMain
+class AppDelegate: UIResponder, UIApplicationDelegate {
+
+    var window: UIWindow?
+    var pushComponent: ROKOPush?
+
+    func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+        let settings: UIUserNotificationSettings = UIUserNotificationSettings( forTypes: [.Alert, .Badge, .Sound], categories: nil )
+        application.registerUserNotificationSettings( settings )
+        application.registerForRemoteNotifications()
+        return true
+    }
+
+     func application( application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData){
+        pushComponent = ROKOPush()
+        pushComponent!.registerWithAPNToken(deviceToken, withCompletion: nil)
+        print( deviceToken )
+    }
+}
+```
+
 ### Handle ROKO Notifications
 
 You can use a very simple API call to handle a remote notification
 
+Objective-C
 ```Objective-C
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
 	[self.pushComponent handleNotification:userInfo];
+}
+```
+
+Swift
+```Swift
+func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]){
+     pushComponent!.handleNotification(userInfo)
 }
 ```
